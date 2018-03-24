@@ -4,7 +4,7 @@ Back to basics
 Uitvoeren doe je met: `php run.php`
 
 Ik heb het alleen getest met php 7.2
-#Installatiehandleiding
+# Installatiehandleiding
 Verander de gegevens in `Database/Connection.php` naar jouw gegevens.
 
 Bijvoorbeeld:
