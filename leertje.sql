@@ -1,0 +1,100 @@
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+CREATE DATABASE IF NOT EXISTS `leertje` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `leertje`;
+
+CREATE TABLE `Category` (
+  `Id` int(11) NOT NULL,
+  `Name` varchar(256) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `File` (
+  `Id` int(11) NOT NULL,
+  `Name` varchar(256) NOT NULL,
+  `Location` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `Product` (
+  `Id` int(11) NOT NULL,
+  `StoreId` int(11) DEFAULT NULL,
+  `Name` varchar(256) DEFAULT NULL,
+  `Price` float DEFAULT NULL,
+  `ShortDescription` varchar(1000) DEFAULT NULL,
+  `FullDescription` text DEFAULT NULL,
+  `MetaDescription` varchar(1000) DEFAULT NULL,
+  `Supplier` varchar(1000) DEFAULT NULL,
+  `Brand` varchar(1000) DEFAULT NULL,
+  `Model` varchar(1000) DEFAULT NULL,
+  `ImageId` int(11) DEFAULT NULL,
+  `ThumbnailId` int(11) DEFAULT NULL,
+  `CategoryId` int(11) DEFAULT NULL,
+  `VATId` int(11) DEFAULT NULL,
+  `AvailableSince` datetime DEFAULT NULL,
+  `Sku` varchar(50) DEFAULT NULL,
+  `Percentage` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `Store` (
+  `Id` int(11) NOT NULL,
+  `Name` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `VAT` (
+  `Id` int(11) NOT NULL,
+  `Name` varchar(256) DEFAULT NULL,
+  `Percentage` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+ALTER TABLE `Category`
+  ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `File`
+  ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `Product`
+  ADD PRIMARY KEY (`Id`),
+  ADD KEY `product_VATId_foreign` (`VATId`),
+  ADD KEY `product_CategoryId_foreign` (`CategoryId`),
+  ADD KEY `product_StoreId_foreign` (`StoreId`);
+
+ALTER TABLE `Store`
+  ADD PRIMARY KEY (`Id`);
+
+ALTER TABLE `VAT`
+  ADD PRIMARY KEY (`Id`);
+
+
+ALTER TABLE `Category`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `File`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `Product`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `Store`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `VAT`
+  MODIFY `Id` int(11) NOT NULL AUTO_INCREMENT;
+
+
+/*ALTER TABLE `Product`
+  ADD CONSTRAINT `product_CategoryId_foreign` FOREIGN KEY (`CategoryId`) REFERENCES `Category` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_StoreId_foreign` FOREIGN KEY (`StoreId`) REFERENCES `Store` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_VATId_foreign` FOREIGN KEY (`VATId`) REFERENCES `VAT` (`Id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;*/
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
