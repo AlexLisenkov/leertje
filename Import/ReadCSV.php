@@ -1,5 +1,5 @@
 <?php
-namespace CSV;
+namespace Import;
 
 class ReadCSV
 {
@@ -29,6 +29,6 @@ class ReadCSV
             $data[] = array_combine($header, $row);
         }
 
-        return $data;
+        return array_change_key_case($data, CASE_LOWER);
     }
 }

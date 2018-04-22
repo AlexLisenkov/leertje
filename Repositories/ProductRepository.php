@@ -18,8 +18,8 @@ class ProductRepository
 
     public function updateOrCreateBySku( string $sku, array $row): bool
     {
-        if( array_key_exists('VAT', $row) ) {
-            $row['VATId'] = $this->vatRepository->findOrCreateByPercentage((int)$row['VAT'])->Id;
+        if( array_key_exists('vat', $row) ) {
+            $row['vatid'] = $this->vatRepository->findOrCreateByPercentage((int)$row['vat'])->Id;
         }
 
         if( !$this->skuExists($sku) ){
@@ -97,52 +97,52 @@ class ProductRepository
 
     private function bindParams( \PDOStatement $query, array $row ): \PDOStatement
     {
-        $storeId = $row['StoreId'] ?? null;
+        $storeId = $row['storeid'] ?? null;
         $query->bindParam('storeId', $storeId, \PDO::PARAM_INT);
 
-        $name = $row['Name'] ?? null;
+        $name = $row['name'] ?? null;
         $query->bindParam('name', $name, \PDO::PARAM_STR);
 
-        $price = $row['Price'] ?? null;
+        $price = $row['price'] ?? null;
         $query->bindParam('price', $price);
 
-        $shortDescription = $row['ShortDescription'] ?? null;
+        $shortDescription = $row['shortdescription'] ?? null;
         $query->bindParam('shortDescription', $shortDescription, \PDO::PARAM_STR);
 
-        $fullDescription = $row['FullDescription'] ?? null;
+        $fullDescription = $row['fulldescription'] ?? null;
         $query->bindParam('fullDescription', $fullDescription, \PDO::PARAM_STR);
 
-        $metaDescription = $row['metaDescription'] ?? null;
+        $metaDescription = $row['metadescription'] ?? null;
         $query->bindParam('metaDescription', $metaDescription, \PDO::PARAM_STR);
 
-        $supplier = $row['Supplier'] ?? null;
+        $supplier = $row['supplier'] ?? null;
         $query->bindParam('supplier', $supplier, \PDO::PARAM_STR);
 
-        $brand = $row['Brand'] ?? null;
+        $brand = $row['brand'] ?? null;
         $query->bindParam('brand', $brand, \PDO::PARAM_STR);
 
-        $model = $row['Model'] ?? null;
+        $model = $row['model'] ?? null;
         $query->bindParam('model', $model, \PDO::PARAM_STR);
 
-        $imageId = $row['ImageId'] ?? null;
+        $imageId = $row['imageid'] ?? null;
         $query->bindParam('imageId', $imageId, \PDO::PARAM_INT);
 
-        $thumbnailId = $row['ThumbnailId'] ?? null;
+        $thumbnailId = $row['thumbnailid'] ?? null;
         $query->bindParam('thumbnailId', $thumbnailId, \PDO::PARAM_INT);
 
-        $categoryId = $row['CategoryId'] ?? null;
+        $categoryId = $row['categoryid'] ?? null;
         $query->bindParam('categoryId', $categoryId, \PDO::PARAM_INT);
 
-        $VATId = $row['VATId'] ?? null;
+        $VATId = $row['vatid'] ?? null;
         $query->bindParam('VATId', $VATId, \PDO::PARAM_INT);
 
-        $availableSince = $row['AvailableSince'] ?? null;
+        $availableSince = $row['Aaailablesince'] ?? null;
         $query->bindParam('availableSince', $availableSince, \PDO::PARAM_STR);
 
-        $sku = $row['Sku'] ?? null;
+        $sku = $row['sku'] ?? null;
         $query->bindParam('sku', $sku, \PDO::PARAM_STR);
 
-        $percentage = $row['Percentage'] ?? null;
+        $percentage = $row['percentage'] ?? null;
         $query->bindParam('percentage', $percentage, \PDO::PARAM_INT);
 
         return $query;

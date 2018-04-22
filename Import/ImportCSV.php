@@ -1,9 +1,9 @@
 <?php
-namespace CSV;
+namespace Import;
 
 use Repositories\ProductRepository;
 
-class ImportCSV
+class ImportCSV implements FileImport
 {
     const PROFIT_MARGIN = 1.15;
 
@@ -34,18 +34,15 @@ class ImportCSV
         $csv_content = $this->readCSV->readFile($file);
 
         foreach($csv_content as $row){
-            $price = $row['PrIce'] * static::PROFIT_MARGIN;
-            unset($row['PrIce']);
-
-            $row['Price'] = $price;
-            $row['StoreId'] = 1;
-            $row['Leverancier'] = "Schoeisel BV";
-            $row['AvailableSince'] = date('Y-m-d H:i:s');
-            $row['ImageId'] = 34;
-            $row['ThumbnailId'] = 87;
-            $row['Metadescription'] = null;
-            $row['CategoryId'] = 1;
-            $this->productRepository->updateOrCreateBySku($row['Sku'], $row);
+            $row['price'] = $row['price'] * static::PROFIT_MARGIN;;
+            $row['storeid'] = 1;
+            $row['supplier'] = "Schoeisel BV";
+            $row['availablesince'] = date('Y-m-d H:i:s');
+            $row['imageid'] = 34;
+            $row['thumbnailid'] = 87;
+            $row['metadescription'] = null;
+            $row['categoryid'] = 1;
+            $this->productRepository->updateOrCreateBySku($row['sku'], $row);
         }
     }
 }
