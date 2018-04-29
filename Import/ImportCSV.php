@@ -1,6 +1,7 @@
 <?php
 namespace Import;
 
+use Repositories\IProductRepository;
 use Repositories\ProductRepository;
 
 class ImportCSV implements FileImport
@@ -20,9 +21,9 @@ class ImportCSV implements FileImport
     /**
      * ImportCSV constructor.
      * @param ReadCSV $readCSV
-     * @param ProductRepository $productRepository
+     * @param IProductRepository $productRepository
      */
-    public function __construct( ReadCSV $readCSV, ProductRepository $productRepository )
+    public function __construct( ReadCSV $readCSV, IProductRepository $productRepository )
     {
         $this->readCSV = $readCSV;
         $this->productRepository = $productRepository;
@@ -44,5 +45,12 @@ class ImportCSV implements FileImport
             $row['categoryid'] = 1;
             $this->productRepository->updateOrCreateBySku($row['sku'], $row);
         }
+        $this->removeNonExistentRows($csv_content);
+    }
+
+    private function removeNonExistentRows(array $rows): void
+    {
+        $product_sku = array_column($rows, 'sku');
+        $this->productRepository->removeMissingProducts($product_sku, 'Schoeisel BV');
     }
 }

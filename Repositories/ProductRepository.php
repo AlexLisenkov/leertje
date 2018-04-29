@@ -3,7 +3,7 @@ namespace Repositories;
 
 use Database\HasConnection;
 
-class ProductRepository
+class ProductRepository implements IProductRepository
 {
     use HasConnection;
 
@@ -30,12 +30,29 @@ class ProductRepository
         return $row;
     }
 
-    private function skuExists( string $sku ): bool
+    public function skuExists( string $sku ): bool
     {
         $query = $this->db()->prepare('SELECT count(*) as hasRecord FROM '. static::TABLE_NAME .' WHERE Sku = :sku');
         $query->bindParam(':sku', $sku, \PDO::PARAM_STR);
         $query->execute();
         return (int) $query->fetchColumn(0) > 0;
+    }
+
+    public function removeMissingProducts(array $sku_array, string $supplier): bool
+    {
+        $sku_string = implode('", "', $sku_array);
+        $query = $this->db()->prepare('DELETE FROM '. static::TABLE_NAME .' WHERE Sku NOT IN ("'.$sku_string.'") AND Supplier = :supplier');
+        $query->bindParam(':supplier', $supplier, \PDO::PARAM_STR);
+        return $query->execute();
+    }
+
+    public function findProductsThatWillBeRemoved(array $sku_array, string $supplier): array
+    {
+        $sku_string = implode('", "', $sku_array);
+        $query = $this->db()->prepare('SELECT Sku FROM '. static::TABLE_NAME .' WHERE Sku NOT IN ("'.$sku_string.'") AND Supplier = :supplier');
+        $query->bindParam(':supplier', $supplier, \PDO::PARAM_STR);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
     }
 
     private function insertRow( array $row ): bool

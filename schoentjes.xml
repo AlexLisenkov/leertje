@@ -18,13 +18,4 @@
 		<vat>21.00</vat>
 		<stock>884</stock>
 	</schoen>
-	<schoen>
-		<sku>58422899324</sku>
-		<price currency="EUR">112.31</price>
-		<name>Nette schoenen</name>
-		<description>Nette, groene schoenen voor onder een pak</description>
-		<brand>Schoenengigant</brand>
-		<vat>21.00</vat>
-		<stock>0</stock>
-	</schoen>
 </schoentjes>

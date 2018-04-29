@@ -1,6 +1,7 @@
 <?php
 namespace Import;
 
+use Repositories\IProductRepository;
 use Repositories\ProductRepository;
 
 class ImportXML implements FileImport
@@ -19,9 +20,9 @@ class ImportXML implements FileImport
     /**
      * ImportCSV constructor.
      * @param ReadXML $readXML
-     * @param ProductRepository $productRepository
+     * @param IProductRepository $productRepository
      */
-    public function __construct( ReadXML $readXML, ProductRepository $productRepository )
+    public function __construct( ReadXML $readXML, IProductRepository $productRepository )
     {
         $this->productRepository = $productRepository;
         $this->readXML = $readXML;
@@ -46,5 +47,12 @@ class ImportXML implements FileImport
             $row['vat'] = $row['vat'] * 100;
             $this->productRepository->updateOrCreateBySku($row['sku'], $row);
         }
+        $this->removeNonExistentRows($xml_content);
+    }
+
+    private function removeNonExistentRows(array $rows): void
+    {
+        $product_sku = array_column($rows, 'sku');
+        $this->productRepository->removeMissingProducts($product_sku, 'Schoentjes BV');
     }
 }
